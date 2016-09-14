@@ -7,7 +7,7 @@ $ oc project testdaemonset
 ----
 
 === Set SCC
-The rsyslog pods need to run privileged in order to access certain system resources.
+The auditd pods need to run privileged in order to access certain system resources.
 
 * /etc/foo - read
 
@@ -28,7 +28,7 @@ cat <<EOF | oc create -f -
 apiVersion: v1
 kind: ClusterRole
 metadata:
-  name: daemonset-admin
+  name: system:daemonset-admin
 rules:
 - resources:
   - daemonsets
@@ -44,7 +44,7 @@ rules:
 EOF
 ```
 
-Grant the daemonset cluster role to your user
+Grant the daemonset cluster role to your user in the right namespace
 ```
-oadm policy add-role-to-user system:daemonset-admin system:serviceaccount:flo:default
+oadm policy add-role-to-user system:daemonset-admin flambert@redhat.com -n testdaemonset
 ```
