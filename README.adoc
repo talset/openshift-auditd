@@ -1,4 +1,4 @@
-# openshift-auditd
+= openshift-auditd
 
 == Setup Project
 ----
@@ -23,7 +23,7 @@ If you are using a different user than admin, you have to grant a daemonset clus
 
 As Admin, create a dedicated cluster role:
 
-```
+----
 cat <<EOF | oc create -f -
 apiVersion: v1
 kind: ClusterRole
@@ -42,9 +42,9 @@ rules:
   - delete
   - update
 EOF
-```
+----
 
 Grant the daemonset cluster role to your user in the right namespace
-```
+----
 oadm policy add-role-to-user system:daemonset-admin flambert@redhat.com -n testdaemonset
-```
+----
