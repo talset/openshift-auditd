@@ -72,8 +72,9 @@ objects:
     name: openshift-auditd
   spec:
     selector:
-      app: openshift-auditd
-      deploymentconfig: openshift-auditd
+      matchLabels:
+        app: openshift-auditd
+        deploymentconfig: openshift-auditd
     strategy:
       type: RollingUpdate
     template:
