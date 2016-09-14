@@ -66,33 +66,34 @@ objects:
   status:
     dockerImageRepository: ""
 
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: extensions/v1beta1
+  kind: DaemonSet
   metadata:
-    creationTimestamp: null
     name: openshift-auditd
   spec:
     selector:
       app: openshift-auditd
       deploymentconfig: openshift-auditd
     strategy:
-      type: Rolling
+      type: RollingUpdate
     template:
       metadata:
         annotations:
           openshift.io/container.openshift-auditd.image.entrypoint: '["/bin/bash"]'
-          openshift.io/generated-by: OpenShiftNewApp
+          openshift.io/scc: privileged
         creationTimestamp: null
         labels:
           app: openshift-auditd
           deploymentconfig: openshift-auditd
       spec:
         containers:
-        - image: openshift-auditd:latest
+        - name: openshift-auditd
+          image: openshift-auditd:latest
           imagePullPolicy: Always
-          name: openshift-auditd
           resources: {}
           terminationMessagePath: /dev/termination-log
+          securityContext:
+            privileged: true
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
