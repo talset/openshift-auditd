@@ -3,7 +3,7 @@ FROM centos
 
 ARG TEST
 
-RUN yum install -y auditd
+RUN yum install -y audit
 
 #ADD ./configs/supervisord.conf /etc/supervisord.conf
 
