@@ -32,6 +32,10 @@ objects:
           kind: ImageStreamTag
           name: centos:latest
       type: Docker
+    output:
+      to:
+        kind: ImageStreamTag
+        name: openshift-auditd:latest
     triggers:
     - github:
         secret: secret101
@@ -59,8 +63,6 @@ objects:
   kind: ImageStream
   metadata:
     creationTimestamp: null
-    labels:
-      app: openshift-auditd
     name: openshift-auditd
   spec:
   status:
@@ -89,16 +91,23 @@ objects:
       spec:
         containers:
         - name: openshift-auditd
-          image: openshift-auditd:latest
+          image: openshift-auditd
           imagePullPolicy: Always
           resources: {}
           terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - name: varlog
+            mountPath: /var/log
           securityContext:
             privileged: true
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
+        volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
     triggers:
     - type: ConfigChange
     - imageChangeParams:
